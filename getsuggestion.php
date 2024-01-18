@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 
 $query = $_GET["query"];
 
-// Replace 'your_table_name' with the actual table name
+// Replace 'suggestion' with the actual table name, and 'suggestion_name' with the correct column name
 $sql = "SELECT suggestion_name FROM suggestion WHERE suggestion_name LIKE '$query%'";
 $result = $conn->query($sql);
 

@@ -31,28 +31,39 @@ function fetchSuggestions(query) {
         }
     };
 
-    // Replace 'getSuggestions.php' with the actual server-side script
     xhr.open("GET", "getsuggestion.php?query=" + encodeURIComponent(query), true);
     xhr.send();
 }
 
+// ... (your existing code)
+
 function displaySuggestions(suggestions) {
+    var searchInput = document.getElementById("searchInput");
     var suggestionsContainer = document.getElementById("suggestions");
     suggestionsContainer.innerHTML = "";
 
-    suggestions.forEach(function (suggestion) {
-        var suggestionElement = document.createElement("div");
-        suggestionElement.textContent = suggestion;
-        suggestionsContainer.appendChild(suggestionElement);
+    if (suggestions.length === 0) {
+        // Display a message when no suggestions are found
+        var noSuggestionElement = document.createElement("div");
+        noSuggestionElement.textContent = "No suggestions found";
+        suggestionsContainer.appendChild(noSuggestionElement);
 
-        suggestionElement.addEventListener("click", function () {
-            // Set the selected suggestion as the input value
-            document.getElementById("searchInput").value = suggestion;
-            suggestionsContainer.innerHTML = ""; // Clear suggestions
+        searchInput.value = "";
+    } else {
+        suggestions.forEach(function (suggestion) {
+            var suggestionElement = document.createElement("div");
+            suggestionElement.textContent = suggestion;
+            suggestionsContainer.appendChild(suggestionElement);
+
+            suggestionElement.addEventListener("click", function () {
+                // Set the selected suggestion as the input value
+                searchInput.value = suggestion;
+                suggestionsContainer.innerHTML = ""; // Clear suggestions
+            });
         });
-    });
+    }
 
     // Position suggestions below the input field
-    var inputRect = document.getElementById("searchInput").getBoundingClientRect();
+    var inputRect = searchInput.getBoundingClientRect();
     suggestionsContainer.style.top = inputRect.bottom + "px";
 }
